@@ -2,12 +2,13 @@
 #define STM32F446XX_H
 /******************** Various Memories Base Addresses *****************/
 #define FLASH_BASE_ADDRESS		0X08000000UL
-#define SRAM_BASE_ADDRESS		0X20000000UL
-#define ROM_BASE_ADDRESS		0X1FFF0000UL
+#define SRAM_BASE_ADDRESS		  0X20000000UL
+#define ROM_BASE_ADDRESS		  0X1FFF0000UL
 
 /******************** Core peripherals Base Addresses *****************/
-#define NVIC_BASE_ADDRESS		0XE000E100UL
+#define NVIC_BASE_ADDRESS		  0XE000E100UL
 #define SYSTICK_BASE_ADDRESS	0xE000E010UL
+#define SCB_BASE_ADDRESS      0xE000ED00UL
 
 /******************** AHB1 Peripheral Base Addresses *****************/
 #define GPIOA_BASE_ADDRESS		0x40020000UL
@@ -48,6 +49,23 @@ typedef struct
   volatile uint32_t Reserved7[244];
   volatile uint32_t NVIC_STIR;
 }NVIC_RegDef_t;
+/******************** SCB Register Definition Structure *****************/
+typedef struct
+{
+	volatile uint32_t SCB_CPUID;
+  volatile uint32_t SCB_ICSR;
+  volatile uint32_t SCB_VTOR;
+  volatile uint32_t SCB_AIRCR;
+  volatile uint32_t SCB_SCR;
+  volatile uint32_t SCB_CCR;
+  volatile uint32_t SCB_SHPR[3];
+  volatile uint32_t SCB_SHCSR;
+  volatile uint32_t SCB_CFSR;
+  volatile uint32_t SCB_HFSR;
+  volatile uint32_t SCB_MMAR;
+  volatile uint32_t SCB_BFAR;
+  volatile uint32_t SCB_AFSR;
+}SCB_RegDef_t;
 /******************** SYSTICK Register Definition Structure *****************/
 typedef struct
 {
@@ -128,5 +146,8 @@ typedef struct
 
 /******************** NVIC Peripheral Definition *****************/
 #define NVIC	((NVIC_RegDef_t*)NVIC_BASE_ADDRESS)
+
+/******************** SCB Peripheral Definition *****************/
+#define SCB	((SCB_RegDef_t*)SCB_BASE_ADDRESS)
 
 #endif
