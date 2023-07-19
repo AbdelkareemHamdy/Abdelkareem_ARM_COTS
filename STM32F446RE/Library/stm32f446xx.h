@@ -8,7 +8,7 @@
 /******************** Core peripherals Base Addresses *****************/
 #define NVIC_BASE_ADDRESS		  0XE000E100UL
 #define SYSTICK_BASE_ADDRESS	0xE000E010UL
-#define SCB_BASE_ADDRESS      0xE000ED00UL
+#define SCB_BASE_ADDRESS      0xE000E008UL
 
 /******************** AHB1 Peripheral Base Addresses *****************/
 #define GPIOA_BASE_ADDRESS		0x40020000UL
@@ -16,7 +16,7 @@
 #define GPIOC_BASE_ADDRESS		0x40020800UL
 #define GPIOD_BASE_ADDRESS		0x40020C00UL
 #define GPIOE_BASE_ADDRESS		0x40021000UL
-#define GPIOF_BASE_ADDRESS		0x40021200UL
+#define GPIOF_BASE_ADDRESS		0x40021400UL
 #define GPIOG_BASE_ADDRESS		0x40021800UL
 #define GPIOH_BASE_ADDRESS		0x40021C00UL
 					
@@ -32,6 +32,28 @@
 
 
 /******************** APB2 Peripheral Base Addresses *****************/
+#define EXTI_BASE_ADDRESS		    0x40013C00UL
+#define SYSCFG_BASE_ADDRESS		  0x40013800UL
+/******************** EXTI Register Definition Structure *****************/
+typedef struct
+{
+	volatile uint32_t EXTI_IMR;
+	volatile uint32_t EXTI_EMR;
+	volatile uint32_t EXTI_RTSR;
+	volatile uint32_t EXTI_FTSR;
+	volatile uint32_t EXTI_SWIER;
+	volatile uint32_t EXTI_PR;
+}EXTI_RegDef_t;
+/******************** SYSCFG Register Definition Structure *****************/
+typedef struct
+{
+	volatile uint32_t SYSCFG_MEMRMP;
+	volatile uint32_t SYSCFG_PMC;
+	volatile uint32_t SYSCFG_EXTICR[4];
+	volatile uint32_t SYSCFG_CMPCR;
+	volatile uint32_t SYSCFG_CFGR;
+}SYSCFG_RegDef_t;
+
 /******************** NVIC Register Definition Structure *****************/
 typedef struct
 {
@@ -52,16 +74,19 @@ typedef struct
 /******************** SCB Register Definition Structure *****************/
 typedef struct
 {
+  volatile uint32_t SCB_ACTLR;
+  volatile uint32_t Reserved1[829];
 	volatile uint32_t SCB_CPUID;
   volatile uint32_t SCB_ICSR;
   volatile uint32_t SCB_VTOR;
   volatile uint32_t SCB_AIRCR;
   volatile uint32_t SCB_SCR;
   volatile uint32_t SCB_CCR;
-  volatile uint32_t SCB_SHPR[3];
+  volatile uint8_t SCB_SHPR[12];
   volatile uint32_t SCB_SHCSR;
   volatile uint32_t SCB_CFSR;
   volatile uint32_t SCB_HFSR;
+  volatile uint32_t Reserved2;
   volatile uint32_t SCB_MMAR;
   volatile uint32_t SCB_BFAR;
   volatile uint32_t SCB_AFSR;
@@ -149,5 +174,12 @@ typedef struct
 
 /******************** SCB Peripheral Definition *****************/
 #define SCB	((SCB_RegDef_t*)SCB_BASE_ADDRESS)
+
+/******************** EXTI Peripheral Definition *****************/
+#define EXTI	((EXTI_RegDef_t*)EXTI_BASE_ADDRESS)
+
+/******************** EXTI Peripheral Definition *****************/
+#define SYSCFG	((SYSCFG_RegDef_t*)SYSCFG_BASE_ADDRESS)
+
 
 #endif

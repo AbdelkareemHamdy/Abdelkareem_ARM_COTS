@@ -10,8 +10,8 @@
 #include "../../Library/stm32f446xx.h"
 #include "../../Library/ErrType.h"
 
-#include "RCC_prv.h"
-#include "RCC_interface.h"
+#include "../inc/RCC_interface.h"
+#include "../inc/RCC_prv.h"
 /****************************************************
  * @fn RCC_SetClksts
  * @brief the function change clock state according to the input parameters
@@ -84,4 +84,13 @@ void RCC_voidAHB1EnablePerapheralClock(AHB1peripheral_ty Copy_Perapheral)
 void RCC_voidAHB1DisablePerapheralClock(AHB1peripheral_ty Copy_Perapheral)
 {
 	RCC->RCC_AHB1ENR &=~(ONE_BIT_MASKING<<Copy_Perapheral);
+}
+
+void RCC_voidAPB2EnablePerapheralClock(APB2peripheral_ty Copy_Perapheral)
+{
+	RCC->RCC_APB2ENR |=(ONE_BIT_MASKING<<Copy_Perapheral);
+}
+void RCC_voidAPB2DisablePerapheralClock(APB2peripheral_ty Copy_Perapheral)
+{
+	RCC->RCC_APB2ENR &=~(ONE_BIT_MASKING<<Copy_Perapheral);
 }

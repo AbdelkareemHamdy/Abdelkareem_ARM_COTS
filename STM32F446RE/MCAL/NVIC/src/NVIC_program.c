@@ -70,7 +70,7 @@ uint8_t NVIC_u8ClearPandingFlag(NVIC_IQR_ty perpheral)
     }
     return Local_u8ErrorStatus;
 }
-uint8_t NVIC_u8setIQRpriority(NVIC_IQR_ty perpheral,uint8_t prority)
+uint8_t NVIC_u8setIQRprionty(NVIC_IQR_ty perpheral,uint8_t prority)
 {
     uint8_t Local_u8ErrorStatus= OK;
     if (240>=perpheral)

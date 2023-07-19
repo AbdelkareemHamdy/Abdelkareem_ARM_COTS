@@ -39,9 +39,30 @@ typedef enum
     AHB1_OTGHS      =29,
     AHB1_OTGHSULPI  =30,   
 }AHB1peripheral_ty;
+typedef enum
+{
+    APB2_TIM1      =0,
+    APB2_TIM8,
+    APB2_USART1    =4,
+    APB2_USART6,
+    APB2_ADC1      =8,
+    APB2_ADC2,
+    APB2_ADC3,
+    APB2_SDIO,
+    APB2_SPI11,
+    APB2_SPI14,
+    APB2_SYSCFG,
+    APB2_TIM9     =16,
+    APB2_TIM10,
+    APB2_TIM11,
+    APB2_SAI1      =22,
+    APB2_SAI2, 
+}APB2peripheral_ty;
 
 uint8_t RCC_u8SetClksts(CLKsSYS_type_ty ClkType,STATE_ty State);
 uint8_t RCC_SetSysClk(CLK_type_ty ClkType);
 void RCC_voidAHB1EnablePerapheralClock(AHB1peripheral_ty Copy_Perapheral);
 void RCC_voidAHB1DisablePerapheralClock(AHB1peripheral_ty Copy_Perapheral);
+void RCC_voidAPB2EnablePerapheralClock(APB2peripheral_ty Copy_Perapheral);
+void RCC_voidAPB2DisablePerapheralClock(APB2peripheral_ty Copy_Perapheral);
 #endif

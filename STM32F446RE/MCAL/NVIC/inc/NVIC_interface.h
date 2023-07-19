@@ -102,6 +102,6 @@ uint8_t NVIC_u8EnableInterrupt(NVIC_IQR_ty perpheral);
 uint8_t NVIC_u8DisableInterrupt(NVIC_IQR_ty perpheral);
 uint8_t NVIC_u8SetPandingFlag(NVIC_IQR_ty perpheral);
 uint8_t NVIC_u8ClearPandingFlag(NVIC_IQR_ty perpheral);
-uint8_t NVIC_u8setIQRpriority(NVIC_IQR_ty perpheral,uint8_t prority);
+uint8_t NVIC_u8setIQRprionty(NVIC_IQR_ty perpheral,uint8_t prority);
 
 #endif /* NVIC_INTERFACE_H_ */
