@@ -44,26 +44,35 @@ typedef enum
 {
     EXTI_DISABLE =0U,
     EXTI_ENABLE
-}EXTI_STATUS_ty;
+}EXTI_INTandEVENT_STATUS_ty;
+
+typedef enum
+{
+    EXTI_RISING_TRIG =0U,
+    EXTI_FALLING_TRIG,
+    EXTI_FALLING_RISING_TRIG
+}EXTI_Trig_Src_ty;
 
 typedef struct
 {
     EXTI_port_ty Port;
     EXTI_Line_ty Line;
-    EXTI_STATUS_ty InterruptState;
-    EXTI_STATUS_ty EventState;
-    EXTI_STATUS_ty RisingEdgeState;
-    EXTI_STATUS_ty FallingEdgeState;
+    EXTI_INTandEVENT_STATUS_ty InterruptState;
+    EXTI_INTandEVENT_STATUS_ty EventState;
+    EXTI_Trig_Src_ty Trig_Src;
     void (*Copy_pvUserFunc)(void);
 }EXTI_CONFIG_ty;
 typedef enum
 {
-    EXTI_FLAG_NOT_RISE =0U,
-    EXTI_FLAG_RISE
+    EXTI_FLAG_NOT_RISED =0U,
+    EXTI_FLAG_RISED
 }EXTI_Flag_STATUS_ty;
 
 uint8_t EXTI_u8Init(EXTI_CONFIG_ty *Config);
 uint8_t EXTI_u8DoSoftwareInterrupt(EXTI_Line_ty Line);
+uint8_t EXTI_u8SetTrigSrc(EXTI_Trig_Src_ty Copy_Trig_Src,EXTI_Line_ty Copy_Line);
+uint8_t EXTI_u8EnableInterrupt(EXTI_Line_ty Copy_Line);
+uint8_t EXTI_u8DisableInterrupt(EXTI_Line_ty Copy_Line);
 uint8_t EXTI_u8ClearPendingFlag(EXTI_Line_ty Line);
 uint8_t EXTI_u8ReadPendingFlag(EXTI_Line_ty Line,EXTI_Flag_STATUS_ty *FlagValue);
 void EXTI_voidReadAllPendingFlag(uint32_t *RegisterValue);

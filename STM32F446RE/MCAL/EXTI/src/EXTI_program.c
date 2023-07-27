@@ -16,27 +16,74 @@
 uint8_t EXTI_u8Init(EXTI_CONFIG_ty *Config)
 {
     uint8_t Local_u8ErrorState = OK;
-	if(((Config->Port) <= EXTI_PORTH)&&((Config->Line) <= EXTI_PIN15))
+	if((Config != NULL)&&(NULL!=(Config->Copy_pvUserFunc)))
 	{
-		/*Rising edge set*/
-		EXTI->EXTI_RTSR &=~(1<<(Config->Line));/*Bit Masking*/
-		EXTI->EXTI_RTSR |= ((Config->RisingEdgeState)<<(Config->Line));
-		/*falling edge set*/
-		EXTI->EXTI_FTSR &=~(1<<(Config->Line));/*Bit Masking*/
-		EXTI->EXTI_FTSR |= ((Config->FallingEdgeState)<<(Config->Line));
-		/*Set callback function*/
-		if (NULL!=(Config->Copy_pvUserFunc))
+		if(((Config->Port) <= EXTI_PORTH)&&((Config->Line) <= EXTI_PIN15)&&((Config->InterruptState)<=EXTI_ENABLE))
 		{
+			switch ((Config->Trig_Src))
+			{
+			case EXTI_RISING_TRIG:
+				EXTI->EXTI_RTSR |= (1<<(Config->Line));
+				EXTI->EXTI_FTSR &=~(1<<(Config->Line));
+				break;
+			case EXTI_FALLING_TRIG:
+				EXTI->EXTI_RTSR &=~(1<<(Config->Line));
+				EXTI->EXTI_FTSR |= (1<<(Config->Line));
+				break;
+			case EXTI_FALLING_RISING_TRIG:
+				EXTI->EXTI_RTSR |= (1<<(Config->Line));
+				EXTI->EXTI_FTSR |= (1<<(Config->Line));
+				break;
+			
+			default:
+				Local_u8ErrorState = NOK;
+				break;
+			}
 			EXTI_pvGlobCallBackLine[Config->Line] = (Config->Copy_pvUserFunc);
+			/*Interrupt set*/
+			EXTI->EXTI_IMR &=~(1<<(Config->Line));/*Bit Masking*/
+			EXTI->EXTI_IMR |=((Config->InterruptState)<<(Config->Line));
+			/*event Set*/
+			/*
+			EXTI->EXTI_EMR &=~(1<<(Config->Line));/*Bit Masking
+			EXTI->EXTI_EMR |=((Config->EventState)<<(Config->Line));
+			*/
 		}
-		/*Interrupt set*/
-		EXTI->EXTI_IMR &=~(1<<(Config->Line));/*Bit Masking*/
-		EXTI->EXTI_IMR |=((Config->InterruptState)<<(Config->Line));
-		/*event Set*/
-		/*
-		EXTI->EXTI_EMR &=~(1<<(Config->Line));/*Bit Masking
-		EXTI->EXTI_EMR |=((Config->EventState)<<(Config->Line));
-		*/
+		else
+		{
+			Local_u8ErrorState = NOK;
+		}
+	}
+	else
+	{
+		Local_u8ErrorState = NULL_PTR_ERR;
+	}
+	return  Local_u8ErrorState ;
+}
+uint8_t EXTI_u8SetTrigSrc(EXTI_Trig_Src_ty Copy_Trig_Src,EXTI_Line_ty Copy_Line)
+{
+	uint8_t Local_u8ErrorState = OK;
+	if (Copy_Line<= EXTI_PIN15)
+	{
+		switch ((Copy_Trig_Src))
+		{
+		case EXTI_RISING_TRIG:
+			EXTI->EXTI_RTSR |= (1<<(Copy_Line));
+			EXTI->EXTI_FTSR &=~(1<<(Copy_Line));
+			break;
+		case EXTI_FALLING_TRIG:
+			EXTI->EXTI_RTSR &=~(1<<(Copy_Line));
+			EXTI->EXTI_FTSR |= (1<<(Copy_Line));
+			break;
+		case EXTI_FALLING_RISING_TRIG:
+			EXTI->EXTI_RTSR |= (1<<(Copy_Line));
+			EXTI->EXTI_FTSR |= (1<<(Copy_Line));
+			break;
+		
+		default:
+			Local_u8ErrorState = NOK;
+			break;
+		}
 	}
 	else
 	{
@@ -44,7 +91,32 @@ uint8_t EXTI_u8Init(EXTI_CONFIG_ty *Config)
 	}
 	return  Local_u8ErrorState ;
 }
-
+uint8_t EXTI_u8EnableInterrupt(EXTI_Line_ty Copy_Line)
+{
+	uint8_t Local_u8ErrorState = OK;
+	if (Copy_Line<= EXTI_PIN15)
+	{
+		EXTI->EXTI_IMR |=(1<<Copy_Line);
+	}
+	else
+	{
+		Local_u8ErrorState = NOK;
+	}
+	return  Local_u8ErrorState ;
+}
+uint8_t EXTI_u8DisableInterrupt(EXTI_Line_ty Copy_Line)
+{
+	uint8_t Local_u8ErrorState = OK;
+	if (Copy_Line<= EXTI_PIN15)
+	{
+		EXTI->EXTI_IMR &=~(1<<Copy_Line);
+	}
+	else
+	{
+		Local_u8ErrorState = NOK;
+	}
+	return  Local_u8ErrorState ;
+}
 uint8_t EXTI_u8DoSoftwareInterrupt(EXTI_Line_ty Line)
 {
 	uint8_t Local_u8ErrorState = OK;
